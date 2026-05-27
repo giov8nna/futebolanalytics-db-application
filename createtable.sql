@@ -232,24 +232,3 @@ CREATE TABLE transferencias (
 ) ENGINE=InnoDB;
 
 
-
-
-UPDATE times
-SET cidade = 'Recife'
-WHERE id_time = 1;
-
-UPDATE partidas
-SET placar_casa = 2,
-    placar_fora = 1
-WHERE id_partida = 1;
-
-UPDATE jogadores
-SET nacionalidade = 'Argentina'
-WHERE id_jogador = 3;
-
-UPDATE classificacao
-SET pontos = 25
-WHERE id_temporada = 1
-AND id_time = 2;
-
-
