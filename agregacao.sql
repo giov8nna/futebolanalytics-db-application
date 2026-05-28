@@ -26,13 +26,6 @@ SELECT
 FROM partidas
 GROUP BY id_estadio;
 
--- Calcular a pontuação total acumulada por cada time na tabela de classificação
-SELECT 
-    id_time,
-    SUM(pontos) AS total_pontos
-FROM classificacao
-GROUP BY id_time;
-
 -- Contar a quantidade total de jogadores cadastrados para cada posição existente
 SELECT 
     id_posicao,
