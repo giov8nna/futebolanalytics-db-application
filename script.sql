@@ -1,4 +1,4 @@
---Visão de Artilharia do Campeonato--
+-- Visão de Artilharia do Campeonato --
 CREATE VIEW vw_artilharia AS
 SELECT 
     j.nome AS Jogador,
@@ -11,7 +11,7 @@ LEFT JOIN times t ON j.id_time = t.id_time
 GROUP BY j.id_jogador, j.nome, t.nome
 ORDER BY Gols DESC;
 
---Registrar Nova Transferência--
+-- Registrar Nova Transferência --
 DELIMITER //
 CREATE PROCEDURE sp_registrar_transferencia(
     IN p_id_jogador INT,
@@ -21,7 +21,9 @@ CREATE PROCEDURE sp_registrar_transferencia(
 )
 BEGIN
     DECLARE v_id_time_origem INT;
+    
     SELECT id_time INTO v_id_time_origem FROM jogadores WHERE id_jogador = p_id_jogador;
+    
     INSERT INTO transferencias (id_jogador, id_time_origem, id_time_destino, valor, data_transferencia)
     VALUES (p_id_jogador, v_id_time_origem, p_id_time_destino, p_valor, p_data);
     
@@ -29,7 +31,7 @@ BEGIN
 END //
 DELIMITER ;
 
---Atualizar Placar Automaticamente--
+-- Atualizar Placar Automaticamente --
 DELIMITER //
 CREATE TRIGGER trg_atualizar_placar AFTER INSERT ON gols
 FOR EACH ROW
@@ -38,14 +40,17 @@ BEGIN
     DECLARE v_id_time_jogador INT;
     DECLARE v_id_time_mandante INT;
 
+    -- Busca a partida e o time ATUAL do jogador
     SELECT e.id_partida, j.id_time INTO v_id_partida, v_id_time_jogador
     FROM eventos e
     INNER JOIN jogadores j ON e.id_jogador = j.id_jogador
     WHERE e.id_evento = NEW.id_evento;
     
+    -- Busca quem é o mandante da partida
     SELECT id_time_mandante INTO v_id_time_mandante FROM partidas WHERE id_partida = v_id_partida;
     
-   IF v_id_time_jogador = v_id_time_mandante THEN
+    -- Compara se o time do jogador é o mandante ou visitante
+    IF v_id_time_jogador = v_id_time_mandante THEN
         UPDATE partidas SET placar_casa = COALESCE(placar_casa, 0) + 1 WHERE id_partida = v_id_partida;
     ELSE
         UPDATE partidas SET placar_fora = COALESCE(placar_fora, 0) + 1 WHERE id_partida = v_id_partida;
