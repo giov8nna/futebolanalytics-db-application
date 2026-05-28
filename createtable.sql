@@ -149,7 +149,8 @@ CREATE TABLE eventos (
 
     tipo_evento ENUM(
         'Gol',
-        'Cartao',
+        'Cartao Amarelo',
+        'Cartao Vermelho',
         'Substituicao',
         'Falta'
     ) NOT NULL,
@@ -230,5 +231,3 @@ CREATE TABLE transferencias (
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 ) ENGINE=InnoDB;
-
-
