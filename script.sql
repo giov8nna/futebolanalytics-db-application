@@ -13,7 +13,7 @@ ORDER BY Gols DESC;
 
 --Registrar Nova Transferência--
 DELIMITER //
-CREATEh PROCEDURE sp_registrar_transferencia(
+CREATE PROCEDURE sp_registrar_transferencia(
     IN p_id_jogador INT,
     IN p_id_time_destino INT,
     IN p_valor DECIMAL(15,2),
@@ -45,10 +45,10 @@ BEGIN
     
     SELECT id_time_mandante INTO v_id_time_mandante FROM partidas WHERE id_partida = v_id_partida;
     
-    IF v_id_time_jogador = v_id_time_mandante THEN
-        UPDATE partidas SET placar_casa = placar_casa + 1 WHERE id_partida = v_id_partida;
+   IF v_id_time_jogador = v_id_time_mandante THEN
+        UPDATE partidas SET placar_casa = COALESCE(placar_casa, 0) + 1 WHERE id_partida = v_id_partida;
     ELSE
-        UPDATE partidas SET placar_fora = placar_fora + 1 WHERE id_partida = v_id_partida;
+        UPDATE partidas SET placar_fora = COALESCE(placar_fora, 0) + 1 WHERE id_partida = v_id_partida;
     END IF;
 END //
 DELIMITER ;
